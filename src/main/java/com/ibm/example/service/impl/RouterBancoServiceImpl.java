@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.ibm.example.model.Transference;
 import com.ibm.example.service.BancoService;
-import com.ibm.example.service.ChooseBancoService;
+import com.ibm.example.service.RouterBancoService;
 
 @Service
-public class ChooseBancoServiceImpl implements ChooseBancoService{
+public class RouterBancoServiceImpl implements RouterBancoService{
 	@Autowired
 	BancoService bancomerServiceImpl;
 	
@@ -23,10 +23,13 @@ public class ChooseBancoServiceImpl implements ChooseBancoService{
 	BancoService banorteServiceImpl;
 	
 	@Override
-	public void chooseBanco(Transference t, String origen) {
+	public void forwardTo(Transference t, String origen) {
 		Optional<BancoService> banco = getBanco(t.getBanco());
 		if(banco.isPresent()) {
 			banco.get().transfer(t, origen);
+		}
+		else {
+			System.out.println("No se reconoce la transferencia:\n\t"+t);
 		}
 	}
 	
